@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="ball.css">
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+				<title>Bouncing ball</title>
+</head>
+<body>
+  
+  <div id="space">
+     <img src="https://raw.githubusercontent.com/Dataloren/test-repository/master/ball2.png" id="ball" />
+  </div>
+
+<script>window.onload = function(){
+
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+  var ball = document.getElementById('ball');
+  var radius = 69;
+  var deg = 5;
+  var rotDifference = 3;
+  var stepX= 5;
+  var stepY = -5;
+  var x = width/2;
+  var y = height/2;
+  var requestId;
+  ball.style.position="absolute";
+
+function rand(min, max) {
+    return (Math.random() * (max-min+1)) + min;
+}
+
+function randomColor(){
+  var h = rand(1, 360);
+    return h;
+}
+
+function randomSat(){
+  var s = rand(50, 100);
+    return s;
+}
+
+function randomLight(){
+  var l = rand(60, 100);
+    return l;
+}
+
+function bounce(){
+
+var change = "hue-rotate("+randomColor()+"deg)" + "saturate("+randomSat()+"%)" + "brightness("+randomLight()+"%)";
+
+  if(y + stepY > height-radius || y + stepY < radius){
+    stepY= -stepY;
+    ball.style.filter = change;
+  }
+
+  if(x + stepX > width-radius || x + stepX < radius){
+    stepX = -stepX;
+    ball.style.filter = change;
+  }
+
+  x+=stepX;
+  y+=stepY;
+
+  ball.style.top = y-radius + 'px';
+  ball.style.left = x-radius + 'px';
+  ball.style.transform ="rotate("+deg+"deg)";
+
+  requestId = window.requestAnimationFrame(bounce);
+  deg = deg + rotDifference;
+
+}
+
+function onButtonClick(event){
+  event.stopImmediatePropagation();
+  bounce();
+}
+
+ball.addEventListener('click', onButtonClick);
+
+function stopAnimate(){
+  window.cancelAnimationFrame(requestId);
+}
+
+
+document.getElementById('space').addEventListener('click', stopAnimate, false);
+
+};</script>	
+</body>
+</html>
